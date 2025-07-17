@@ -2,32 +2,49 @@
     <div class="col-4">
     </div>
     <div class="col-4 " >
-      <div class="grid h-screen">
+      <div v-if="tem_login"  class="grid h-screen" >
           <div class="col-12" style="height: 20%;"></div>
-          <div class="col-12 login-card" style="height: 60%; text-align: center; border-radius: 25px;">
-              <div class="text-center mb-4">
-                <h2 class="text-2xl font-bold mb-2" style="color: rgb(65, 52, 46);">Bienvenidos a AURA</h2>
-                <p class="text-secondary" style="color: aliceblue;">Inicia sesión para continuar</p>
-              </div>
+          <div class="col-12">
+            <div class="grid">
+              <div class="col-2"></div>
+              <div class="col-8 login-card" style="height: 60%; text-align: center;">
+                  <div class="text-center mb-4">
+                    <h2 class="text-2xl font-bold mb-2" style="color: rgb(65, 52, 46);">Bienvenidos a AURA</h2>
+                    <p class="text-secondary" style="color: aliceblue;">Inicia sesión para continuar</p>
+                  </div>
+                  <div class="col-12" style="text-align: left;">
+                    
+                  <div>
+                      <label for="username" class="block mb-2">Email</label>
+                      <InputText id="username" v-model="username" class="w-full" />
+                    </div>
 
-              <div class="col-12" style="text-align: left;">
-                
-               <div>
-                  <label for="username" class="block mb-2">Email</label>
-                  <InputText id="username" v-model="username" class="w-full" />
-                </div>
-
+                  </div>
+                  <div class="col-12" style="text-align: left;">
+                    
+                  <div>
+                      <label for="username" class="block mb-2">Password</label>
+                      <Password v-model="password" :feedback="false" variant="filled"  toggleMask/>
+                    </div>
+                  </div>
+                  <div class="col-12" style="text-align: center;">
+                    <Button label="Login" severity="success" class="w-full" @click="iniciarSesion" />
+                  </div>
               </div>
-              <div class="col-12" style="text-align: left;">
-                 
-               <div>
-                  <label for="username" class="block mb-2">Password</label>
-                  <Password v-model="value" :feedback="false" variant="filled"  toggleMask/>
-                </div>
+              <div class="col-2"></div>
+            </div>
+          </div>
+          <div class="col-12" style="height: 20%;"></div>
+      </div>
+       <div v-if="tem_iniciador"  class="grid h-screen" >
+          <div class="col-12" style="height: 20%;"></div>
+          <div class="col-12 login-card" style="height: 30%; text-align: center;">
+             <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold mb-2" style="color: rgb(65, 52, 46);">Iniciando AURA</h2>
+                <p class="text-secondary" style="color: aliceblue;">Cargando configuraciones de usuario</p>
               </div>
-
               <div class="col-12" style="text-align: center;">
-                <Button label="Login" severity="success" class="w-full"/>
+                <Image :src="loadingGif" alt="Image" width="250" />
               </div>
           </div>
           <div class="col-12" style="height: 20%;"></div>

@@ -10,11 +10,11 @@ const routes = [
     name: 'Login',
     component: () => import('@/pages/Login/index.vue')
   },
-  /*{
+  {
     path: '/AuraF',
     name: 'AuraF',
     component: () => import('@/layouts/MainLayout.vue')
-  }*/
+  }
 ]
 
 const router = createRouter({

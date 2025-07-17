@@ -6,13 +6,13 @@ import Aura from '@primeuix/themes/aura';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
-
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import { Form } from '@primevue/forms';
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import Password from 'primevue/password';
+import Image from 'primevue/image';
 
 import 'primeflex/primeflex.css';
 import '@primeuix/themes/aura/';
@@ -33,6 +33,11 @@ app.component('Form', Form);
 app.component('Splitter', Splitter);
 app.component('SplitterPanel', SplitterPanel);
 app.component('Password', Password);
+app.component('Image', Image);
+
+
+
+
 app.use(router)
 app.use(createPinia())
 app.mount("#app");
