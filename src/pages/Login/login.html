@@ -1,0 +1,39 @@
+<div class="grid h-screen login-background" >
+    <div class="col-4">
+    </div>
+    <div class="col-4 " >
+      <div class="grid h-screen">
+          <div class="col-12" style="height: 20%;"></div>
+          <div class="col-12 login-card" style="height: 60%; text-align: center; border-radius: 25px;">
+              <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold mb-2" style="color: rgb(65, 52, 46);">Bienvenidos a AURA</h2>
+                <p class="text-secondary" style="color: aliceblue;">Inicia sesión para continuar</p>
+              </div>
+
+              <div class="col-12" style="text-align: left;">
+                
+               <div>
+                  <label for="username" class="block mb-2">Email</label>
+                  <InputText id="username" v-model="username" class="w-full" />
+                </div>
+
+              </div>
+              <div class="col-12" style="text-align: left;">
+                 
+               <div>
+                  <label for="username" class="block mb-2">Password</label>
+                  <Password v-model="value" :feedback="false" variant="filled"  toggleMask/>
+                </div>
+              </div>
+
+              <div class="col-12" style="text-align: center;">
+                <Button label="Login" severity="success" class="w-full"/>
+              </div>
+          </div>
+          <div class="col-12" style="height: 20%;"></div>
+      </div>
+    </div>
+    <div class="col-4"></div>
+  </div>
+
+ 
