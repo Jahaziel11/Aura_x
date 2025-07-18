@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useSessionStore } from '@/store/sessionStore';
 
 const routes = [
   {
@@ -13,7 +14,8 @@ const routes = [
   {
     path: '/AuraF',
     name: 'AuraF',
-    component: () => import('@/layouts/MainLayout.vue')
+    component: () => import('@/layouts/MainLayout.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -21,5 +23,15 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  const sessionStore = useSessionStore();
+  sessionStore.cargarSesion();
+  if (to.meta.requiresAuth && !sessionStore.isAuthenticated) {
+    next('/login'); 
+  } else {
+    next();
+  }
+});
 
 export default router

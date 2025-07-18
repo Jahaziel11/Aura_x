@@ -23,7 +23,7 @@ export default {
           username: username.value,
           password: password.value
         });
-        console.log(res.data);
+
         if (res.data.success) {
           tem_login.value = false;
           tem_iniciador.value = true;
@@ -33,6 +33,7 @@ export default {
             password: password.value
           });
           if (res.data.success) {
+            console.log(res.data);
             sessionStore.iniciarSesion(res.data);
             setTimeout(() => {
               router.push('/AuraF')

@@ -10,11 +10,9 @@ import avatar from '@/assets/avatar.png';
 
 const showSessionModal = ref(false)
 const showInactivityModal = ref(false)
-
 const sessionStore = useSessionStore()
 const vistaActual = ref('Home')
-const vistas = { Home, Macroproceso }
-
+const vistas = {}
 const eventos = ['mousemove', 'keydown', 'click', 'touchstart']
 let inactividadTimer = null
 const tiempoInactividad = 10 * 60 * 1000 // 10 minutos
@@ -25,52 +23,25 @@ const resetInactividad = () => {
     showInactivityModal.value = true
   }, tiempoInactividad)
 }
-const items = ref([
-    {
-        label: 'Home',
-        icon: 'pi pi-home'
-    },
-    {
-        label: 'Features',
-        icon: 'pi pi-star'
-    },
-    {
-        label: 'Projects',
-        icon: 'pi pi-search',
-        items: [
-            {
-                label: 'Components',
-                icon: 'pi pi-bolt'
-            },
-            {
-                label: 'Blocks',
-                icon: 'pi pi-server'
-            },
-            {
-                label: 'UI Kit',
-                icon: 'pi pi-pencil'
-            },
-            {
-                label: 'Templates',
-                icon: 'pi pi-palette',
-                items: [
-                    {
-                        label: 'Apollo',
-                        icon: 'pi pi-palette'
-                    },
-                    {
-                        label: 'Ultima',
-                        icon: 'pi pi-palette'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        label: 'Contact',
-        icon: 'pi pi-envelope'
-    }
-]);
+
+const items = ref('');
+
+const cargamenu = async () => {
+  if (Array.isArray(sessionStore.menusesion)) {
+    items.value = sessionStore.menusesion.map(menu => ({
+      label: menu.nombre,
+      icon: menu.icono || 'pi pi-question-circle',
+      items: menu.submenus?.map(submenu => {
+        const vistaComponente = vistas[submenu.ruta] || Home; 
+        return {
+          label: submenu.nombre,
+          icon: submenu.icono || 'pi pi-circle-fill',
+          component: vistaComponente
+        };
+      }) || []
+    }));
+  }
+}
 
 let verificadorSesionTimer = null
 const iniciarVerificacionSesion = () => {
@@ -82,8 +53,8 @@ const iniciarVerificacionSesion = () => {
   }, 18000) 
 }
 
-
 onMounted(async () => {
+  cargamenu()
   const activa = await validarSesionActiva()
   if (!activa) {
     showSessionModal.value = true
@@ -99,6 +70,8 @@ onBeforeUnmount(() => {
   clearTimeout(inactividadTimer)
   clearInterval(verificadorSesionTimer)
 })
+
+
 </script>
 
 <template>
