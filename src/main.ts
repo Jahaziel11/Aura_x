@@ -13,7 +13,11 @@ import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import Password from 'primevue/password';
 import Image from 'primevue/image';
+import Menubar from 'primevue/menubar';
+import Avatar from 'primevue/avatar'
 
+
+import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css';
 import '@primeuix/themes/aura/';
          
@@ -34,7 +38,8 @@ app.component('Splitter', Splitter);
 app.component('SplitterPanel', SplitterPanel);
 app.component('Password', Password);
 app.component('Image', Image);
-
+app.component('Menubar', Menubar);
+app.component('Avatar', Avatar);
 
 
 
