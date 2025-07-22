@@ -1,5 +1,5 @@
 <div class="card">
-  <DataTable
+ <!-- <DataTable
     :value="productos"
     :paginator="true"
     :rows="10"
@@ -8,7 +8,7 @@
     :currentPageReportTemplate="paginatorConfig.currentPageReportTemplate"
     v-model:filters="filters"
     :loading="loading"
-    filterDisplay="row"
+    filterDisplay="menu"
     :globalFilterFields="['codigo', 'nombre', 'categoria', 'cantidad', 'valor']"  >
     <template #header>
         <div class="flex justify-end mb-4">
@@ -110,5 +110,56 @@
         </template>
     </Column>
    
-  </DataTable>
+  </DataTable>-->
+
+  <DataTable
+  :value="productos"
+  :paginator="true"
+  :rows="10"
+  :rowsPerPageOptions="[10, 20, 50]"
+  :currentPageReportTemplate="'{first} a {last} de {totalRecords}'"
+  v-model:filters="filters"
+  :loading="loading"
+  filterDisplay="row"
+  size="small"
+  stripedRows 
+  :globalFilterFields="columnas.map(c => c.field)"
+>
+  <template #header>
+    <div class="flex justify-between items-center mb-4">
+      <Button type="button" icon="pi pi-filter-slash" label="Borrar Filtros" @click="limpiarFiltros" outlined />
+      <IconField iconPosition="left" class="w-full md:w-20rem">
+        <InputIcon class="absolute mt-2 ml-2">
+          <i class="pi pi-search" />
+        </InputIcon>
+        <InputText v-model="filters['global'].value" placeholder="Buscar..." class="pl-8 w-full" />
+      </IconField>
+    </div>
+  </template>
+
+  <template v-for="col in columnas" :key="col.field">
+    <Column :field="col.field" :header="col.header">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText
+          v-model="filterModel.value"
+          @input="filterCallback()"
+          :placeholder="'Filtrar ' + col.header"
+          class="p-column-filter"
+        />
+      </template>
+    </Column>
+  </template>
+
+
+  <Column header="Acciones" class="w-24 !text-end">
+    <template #body="{ data }">
+      <div class="flex gap-2 justify-end">
+        <Button icon="pi pi-eye" severity="info" rounded />
+        <Button icon="pi pi-pencil" severity="danger" rounded />
+        <Button icon="pi pi-trash" severity="success" rounded />
+      </div>
+    </template>
+  </Column>
+</DataTable>
+
 </div>
