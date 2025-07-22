@@ -1,0 +1,12 @@
+/* MiTabla.css */
+.p-column-filter {
+  width: 100%;
+}
+
+.p-paginator {
+  margin-top: 1rem;
+}
+
+.p-paginator-current {
+  margin-left: 1rem;
+}

@@ -15,7 +15,10 @@ import Password from 'primevue/password';
 import Image from 'primevue/image';
 import Menubar from 'primevue/menubar';
 import Avatar from 'primevue/avatar'
-
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup';   // optional
+import Row from 'primevue/row';                   // optional
 
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css';
@@ -30,6 +33,49 @@ app.use(PrimeVue,{
          darkModeSelector: false || 'none',
         }
     },
+    locale: {
+        startsWith: 'Comienza con',
+        contains: 'Contiene',
+        notContains: 'No contiene',
+        endsWith: 'Termina con',
+        equals: 'Igual a',
+        notEquals: 'No igual a',
+        noFilter: 'Sin filtro',
+        lt: 'Menor que',
+        lte: 'Menor o igual que',
+        gt: 'Mayor que',
+        gte: 'Mayor o igual que',
+        dateIs: 'Fecha es',
+        dateIsNot: 'Fecha no es',
+        dateBefore: 'Fecha antes de',
+        dateAfter: 'Fecha después de',
+        clear: 'Limpiar',
+        apply: 'Aplicar',
+        matchAll: 'Coincidir todo',
+        matchAny: 'Coincidir cualquiera',
+        addRule: 'Añadir regla',
+        removeRule: 'Eliminar regla',
+        accept: 'Sí',
+        reject: 'No',
+        choose: 'Elegir',
+        upload: 'Subir',
+        cancel: 'Cancelar',
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        today: 'Hoy',
+        weekHeader: 'Sem',
+        firstDayOfWeek: 1,
+        dateFormat: 'dd/mm/yy',
+        weak: 'Débil',
+        medium: 'Medio',
+        strong: 'Fuerte',
+        passwordPrompt: 'Ingrese una contraseña',
+        emptyFilterMessage: 'No se encontraron resultados',
+        emptyMessage: 'No hay registros disponibles'
+    }
 });
 app.component('Button', Button);
 app.component('InputText', InputText);
@@ -40,6 +86,11 @@ app.component('Password', Password);
 app.component('Image', Image);
 app.component('Menubar', Menubar);
 app.component('Avatar', Avatar);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
+app.component('ColumnGroup', ColumnGroup);
+app.component('Row', Row);
+
 
 
 

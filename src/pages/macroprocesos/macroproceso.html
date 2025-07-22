@@ -1,0 +1,114 @@
+<div class="card">
+  <DataTable
+    :value="productos"
+    :paginator="true"
+    :rows="10"
+    :rowsPerPageOptions="paginatorConfig.rowsPerPageOptions"
+    :paginatorTemplate="paginatorConfig.paginatorTemplate"
+    :currentPageReportTemplate="paginatorConfig.currentPageReportTemplate"
+    v-model:filters="filters"
+    :loading="loading"
+    filterDisplay="row"
+    :globalFilterFields="['codigo', 'nombre', 'categoria', 'cantidad', 'valor']"  >
+    <template #header>
+        <div class="flex justify-end mb-4">
+          <Button type="button" icon="pi pi-filter-slash" label="Borrar Filtros" outlined />
+          <IconField iconPosition="left" class="w-full md:w-20rem">
+            <InputIcon class="absolute mt-2 ml-2">
+              <i class="pi pi-search" />
+            </InputIcon>
+            <InputText 
+              v-model="filters['global'].value" 
+              placeholder="Buscar..." 
+              class="pl-8 w-full" 
+            />
+          </IconField>
+        </div>
+    </template>
+    <template #empty> No se encontraron datos. </template>
+    <template #loading> Cargando datos. Espere, por favor. </template>
+
+        
+    <Column field="codigo" header="Código">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText 
+          v-model="filterModel.value" 
+          @input="filterCallback()" 
+          placeholder="Filtrar código"
+          class="p-column-filter"
+        />
+      </template>
+    </Column>
+    
+    <Column field="nombre" header="Nombre">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText 
+          v-model="filterModel.value" 
+          @input="filterCallback()" 
+          placeholder="Filtrar nombre"
+          class="p-column-filter"
+        />
+      </template>
+    </Column>
+    
+    <Column field="categoria" header="Categoría">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText 
+          v-model="filterModel.value" 
+          @input="filterCallback()" 
+          placeholder="Filtrar categoría"
+          class="p-column-filter"
+        />
+      </template>
+    </Column>
+    
+    <Column field="cantidad" header="Cantidad">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText 
+          v-model="filterModel.value" 
+          @input="filterCallback()" 
+          placeholder="Filtrar cantidad"
+          class="p-column-filter"
+        />
+      </template>
+    </Column>
+
+    <Column field="valor" header="Valor">
+      <template #filter="{ filterModel, filterCallback }">
+        <InputText 
+          v-model="filterModel.value" 
+          @input="filterCallback()" 
+          placeholder="Filtrar Valor"
+          class="p-column-filter"
+        />
+      </template>
+    </Column>
+    <Column class="w-24 !text-end">
+        <template #body="{ data }">
+            <Button icon="pi pi-eye"  severity="secondary" rounded></Button>
+        </template>
+    </Column>
+    <Column class="w-24 !text-end">
+        <template #body="{ data }">
+            <Button icon="pi pi-pencil"  severity="secondary" rounded></Button>
+        </template>
+    </Column>
+    <Column class="w-24 !text-end">
+        <template #body="{ data }">
+            <Button icon="pi pi-trash"  severity="secondary" rounded style="color: slateblue"></Button>
+        </template>
+    </Column>
+
+    <Column class="w-24 !text-end">
+        <template #body="{ data }">
+            <Button icon="pi pi-lock-open"  severity="secondary" rounded></Button>
+        </template>
+    </Column>
+    <Column class="w-24 !text-end">
+        <template #body="{ data }">
+            <Button icon="pi pi-lock"  severity="secondary" rounded></Button>
+        </template>
+    </Column>
+   
+  </DataTable>
+</div>

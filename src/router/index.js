@@ -7,10 +7,18 @@ const routes = [
     redirect: '/login'
   },
   {
+    path: '/macroprocesos',
+    name: 'macroprocesos',
+    component: () => import('@/pages/macroprocesos/index.vue')
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@/pages/Login/index.vue')
   },
+
+
+  
   {
     path: '/AuraF',
     name: 'AuraF',
