@@ -1,117 +1,4 @@
 <div class="card">
- <!-- <DataTable
-    :value="productos"
-    :paginator="true"
-    :rows="10"
-    :rowsPerPageOptions="paginatorConfig.rowsPerPageOptions"
-    :paginatorTemplate="paginatorConfig.paginatorTemplate"
-    :currentPageReportTemplate="paginatorConfig.currentPageReportTemplate"
-    v-model:filters="filters"
-    :loading="loading"
-    filterDisplay="menu"
-    :globalFilterFields="['codigo', 'nombre', 'categoria', 'cantidad', 'valor']"  >
-    <template #header>
-        <div class="flex justify-end mb-4">
-          <Button type="button" icon="pi pi-filter-slash" label="Borrar Filtros" outlined />
-          <IconField iconPosition="left" class="w-full md:w-20rem">
-            <InputIcon class="absolute mt-2 ml-2">
-              <i class="pi pi-search" />
-            </InputIcon>
-            <InputText 
-              v-model="filters['global'].value" 
-              placeholder="Buscar..." 
-              class="pl-8 w-full" 
-            />
-          </IconField>
-        </div>
-    </template>
-    <template #empty> No se encontraron datos. </template>
-    <template #loading> Cargando datos. Espere, por favor. </template>
-
-        
-    <Column field="codigo" header="Código">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText 
-          v-model="filterModel.value" 
-          @input="filterCallback()" 
-          placeholder="Filtrar código"
-          class="p-column-filter"
-        />
-      </template>
-    </Column>
-    
-    <Column field="nombre" header="Nombre">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText 
-          v-model="filterModel.value" 
-          @input="filterCallback()" 
-          placeholder="Filtrar nombre"
-          class="p-column-filter"
-        />
-      </template>
-    </Column>
-    
-    <Column field="categoria" header="Categoría">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText 
-          v-model="filterModel.value" 
-          @input="filterCallback()" 
-          placeholder="Filtrar categoría"
-          class="p-column-filter"
-        />
-      </template>
-    </Column>
-    
-    <Column field="cantidad" header="Cantidad">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText 
-          v-model="filterModel.value" 
-          @input="filterCallback()" 
-          placeholder="Filtrar cantidad"
-          class="p-column-filter"
-        />
-      </template>
-    </Column>
-
-    <Column field="valor" header="Valor">
-      <template #filter="{ filterModel, filterCallback }">
-        <InputText 
-          v-model="filterModel.value" 
-          @input="filterCallback()" 
-          placeholder="Filtrar Valor"
-          class="p-column-filter"
-        />
-      </template>
-    </Column>
-    <Column class="w-24 !text-end">
-        <template #body="{ data }">
-            <Button icon="pi pi-eye"  severity="secondary" rounded></Button>
-        </template>
-    </Column>
-    <Column class="w-24 !text-end">
-        <template #body="{ data }">
-            <Button icon="pi pi-pencil"  severity="secondary" rounded></Button>
-        </template>
-    </Column>
-    <Column class="w-24 !text-end">
-        <template #body="{ data }">
-            <Button icon="pi pi-trash"  severity="secondary" rounded style="color: slateblue"></Button>
-        </template>
-    </Column>
-
-    <Column class="w-24 !text-end">
-        <template #body="{ data }">
-            <Button icon="pi pi-lock-open"  severity="secondary" rounded></Button>
-        </template>
-    </Column>
-    <Column class="w-24 !text-end">
-        <template #body="{ data }">
-            <Button icon="pi pi-lock"  severity="secondary" rounded></Button>
-        </template>
-    </Column>
-   
-  </DataTable>-->
-
   <DataTable
   :value="productos"
   :paginator="true"
@@ -126,14 +13,26 @@
   :globalFilterFields="columnas.map(c => c.field)"
 >
   <template #header>
-    <div class="flex justify-between items-center mb-4">
-      <Button type="button" icon="pi pi-filter-slash" label="Borrar Filtros" @click="limpiarFiltros" outlined />
-      <IconField iconPosition="left" class="w-full md:w-20rem">
-        <InputIcon class="absolute mt-2 ml-2">
-          <i class="pi pi-search" />
-        </InputIcon>
-        <InputText v-model="filters['global'].value" placeholder="Buscar..." class="pl-8 w-full" />
-      </IconField>
+    <div class="flex flex-row-reverse flex-wrap" style="margin-bottom: 10px;">
+        <div class="flex align-items-center justify-content-center">
+          <Button severity="success" raised icon="pi pi-plus-circle" label="Crear Nuevo" @click="crearmacroproceso" />
+      </div>
+    </div>
+    <div class="flex justify-content-between flex-wrap">
+      <div class="flex align-items-center justify-content-center">
+        <Button severity="warn" icon="pi pi-filter-slash" label="Borrar Filtros" @click="limpiarFiltros" />
+      </div>
+      <div class="flex align-items-center justify-content-center">
+          <p class="text-2xl w-10">Macroprocesos</p>
+        </div>
+      <div class="flex align-items-center justify-content-center">
+        <IconField iconPosition="left" class="w-full md:w-20rem">
+          <InputIcon class="absolute mt-2 ml-2">
+            <i class="pi pi-search" />
+          </InputIcon>
+          <InputText v-model="filters['global'].value" placeholder="Buscar..." class="pl-8 w-full"  />
+        </IconField>
+      </div>
     </div>
   </template>
 
@@ -162,4 +61,33 @@
   </Column>
 </DataTable>
 
+
+  <Dialog v-model:visible="visible" header="Nuevo Macroproceso" :position="position" :style="{ width: '40rem' }">
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="firstname2">Nombre</label>
+        <input id="firstname2" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+      </div>
+      <div class="field col">
+        <label for="lastname2">Tipo</label>
+        <Select :options="tipos" optionLabel="name"  class="w-full md:w-56" />    
+      </div>
+    </div>
+    <div class="formgrid grid">
+      <div class="field col">
+        <label for="lastname2">Area</label>
+        <Select :options="areas" optionLabel="name"  class="w-full md:w-56" />       
+      </div>
+      <div class="field col">
+        <label for="lastname2">Responsable</label>
+        <Select :options="responsables" optionLabel="name"  class="w-full md:w-56" />    
+      </div>
+    </div>
+    <div class="flex flex-row-reverse flex-wrap" style="margin-bottom: 10px;">
+        <div class="flex align-items-center justify-content-center">
+          <Button @click="visible = false" severity="danger" raised icon="pi pi-times-circle" label="Cerrar" style="margin-right: 5px;"/>
+          <Button severity="success" raised icon="pi pi-plus-circle" label="Crear" @click="crearmacroproceso" />
+      </div>
+    </div>
+  </Dialog>
 </div>

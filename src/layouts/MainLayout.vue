@@ -119,7 +119,7 @@ onBeforeUnmount(() => {
     </div>  
 
     <div class="flex">
-    <main class="flex-1 p-4">
+    <main class="flex-1 p-1" style="padding-bottom: 0px;">
       <component :is="vistas[vistaComponente]" />
     </main>
   </div>

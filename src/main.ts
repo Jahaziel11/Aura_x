@@ -19,6 +19,8 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row';                   // optional
+import Dialog from 'primevue/dialog';
+import Select from 'primevue/select';
 
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css';
@@ -90,7 +92,8 @@ app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('ColumnGroup', ColumnGroup);
 app.component('Row', Row);
-
+app.component('Dialog', Dialog);
+app.component('Select', Select);
 
 
 
