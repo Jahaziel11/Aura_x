@@ -21,6 +21,10 @@ import ColumnGroup from 'primevue/columngroup';   // optional
 import Row from 'primevue/row';                   // optional
 import Dialog from 'primevue/dialog';
 import Select from 'primevue/select';
+import Toast from 'primevue/toast';
+import ToastService from 'primevue/toastservice'; 
+import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmationService from 'primevue/confirmationservice';
 
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css';
@@ -79,6 +83,8 @@ app.use(PrimeVue,{
         emptyMessage: 'No hay registros disponibles'
     }
 });
+app.use(ToastService);
+app.use(ConfirmationService);
 app.component('Button', Button);
 app.component('InputText', InputText);
 app.component('Form', Form);
@@ -94,8 +100,8 @@ app.component('ColumnGroup', ColumnGroup);
 app.component('Row', Row);
 app.component('Dialog', Dialog);
 app.component('Select', Select);
-
-
+app.component('ConfirmDialog', ConfirmDialog);
+app.component('Toast', Toast);
 
 app.use(router)
 app.use(createPinia())

@@ -15,7 +15,7 @@
   <template #header>
     <div class="flex flex-row-reverse flex-wrap" style="margin-bottom: 10px;">
         <div class="flex align-items-center justify-content-center">
-          <Button severity="success" raised icon="pi pi-plus-circle" label="Crear Nuevo" @click="crearmacroproceso" />
+          <Button severity="success" raised icon="pi pi-plus-circle" label="Crear Nuevo" @click="muestramodal" />
       </div>
     </div>
     <div class="flex justify-content-between flex-wrap">
@@ -66,21 +66,21 @@
     <div class="formgrid grid">
       <div class="field col">
         <label for="firstname2">Nombre</label>
-        <input id="firstname2" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        <input v-model="v_nombre" id="firstname2" type="text" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
       </div>
       <div class="field col">
         <label for="lastname2">Tipo</label>
-        <Select :options="tipos" optionLabel="name"  class="w-full md:w-56" />    
+        <Select v-model="v_tipo" :options="tipos" optionValue="code" optionLabel="name"  class="w-full md:w-56" />    
       </div>
     </div>
     <div class="formgrid grid">
       <div class="field col">
         <label for="lastname2">Area</label>
-        <Select :options="areas" optionLabel="name"  class="w-full md:w-56" />       
+        <Select v-model="v_area" :options="areas" optionValue="code" optionLabel="name"  class="w-full md:w-56" />       
       </div>
       <div class="field col">
         <label for="lastname2">Responsable</label>
-        <Select :options="responsables" optionLabel="name"  class="w-full md:w-56" />    
+        <Select v-model="v_responsable" :options="responsables" optionValue="code" optionLabel="name"  class="w-full md:w-56" />    
       </div>
     </div>
     <div class="flex flex-row-reverse flex-wrap" style="margin-bottom: 10px;">

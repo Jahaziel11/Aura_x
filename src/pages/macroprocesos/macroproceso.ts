@@ -2,6 +2,10 @@ import { ref, onMounted } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
 import axios from 'axios';
 import { useSessionStore } from '@/store/sessionStore'
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
+
+
 
 export default {
   setup() {
@@ -19,6 +23,13 @@ export default {
     const tipos = ref('');
     const areas = ref('');
     const responsables = ref('');
+    const v_nombre= ref('');
+    const v_tipo= ref('');
+    const v_area= ref('');
+    const v_responsable= ref('');
+    const confirm = useConfirm();
+    const toast = useToast();
+
     const paginatorConfig = {
       paginatorTemplate: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown CurrentPageReport',
       rowsPerPageOptions: [5, 10, 20],
@@ -82,10 +93,70 @@ export default {
       });
     };
 
-    const crearmacroproceso = () => {
+    const muestramodal = () => {
       visible.value = true;
     }
 
-    return { productos, filters, paginatorConfig,columnas,visible,position,tipos,areas,responsables,limpiarFiltros,crearmacroproceso };
+    const crearmacroproceso = async () => {
+      confirm.require({
+        message: '¿Está de acuerdo en Crear el Macro Proceso?',
+        header: 'Confirmacion del Usuario',
+        icon: 'pi pi-exclamation-triangle',
+        position: 'top',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Crear'
+        },
+        accept: async () => {
+          const datos = {
+            id:"0",
+            nombre:v_nombre.value,
+            tipo: v_tipo.value,
+            area_responsable:v_area.value,
+            responsable:v_responsable.value,
+            estado:"P"
+          }
+          console.log(datos);
+          const res = await axios.post(ip + '/macroprocesos', {
+            sesion_id: sessionStore.sesion_id,
+            data: datos
+          });
+          if (res.data.success) {
+            visible.value = false;
+            v_nombre.value = '';
+            v_tipo.value = '';
+            v_area.value = '';
+            v_responsable.value = '';
+            toast.add({ severity: 'success', summary: 'Exito', detail:res.data.mensaje, life: 3000 });
+          }
+          },
+        reject: () => {
+            
+        }
+    });
+    }
+
+    return { 
+      productos, 
+      filters, 
+      paginatorConfig,
+      columnas,
+      visible,
+      position,
+      tipos,
+      areas,
+      responsables,
+      limpiarFiltros,
+      muestramodal,
+      crearmacroproceso,
+      v_nombre,
+      v_tipo,
+      v_area,
+      v_responsable
+    };
   }
 }
