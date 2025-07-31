@@ -36,8 +36,35 @@
     </div>
   </template>
 
+
+  <Column header="" class="w-24 !text-end">
+    <template #body="{ data }">
+      <div class="flex gap-2 justify-content-center">
+        <span 
+          v-if="data.estado === 'P'" 
+          class="pi pi-thumbs-up" 
+          style="color: #22c55e"
+          :title="'Estado: Pendiente por Aprobar'"
+        ></span>
+        <span 
+          v-else-if="data.estado === 'A'" 
+          class="pi pi-thumbs-up-fill" 
+          style="color: #22c55e"
+          :title="'Estado: Aprobado'"
+        ></span>
+        <span 
+          v-else-if="data.estado === 'R'" 
+          class="pi pi-thumbs-down-fill" 
+          style="color: #ff0000"
+          :title="'Estado: Rechazado'"
+        ></span>
+      </div>
+    </template>
+  </Column>
+
+
   <template v-for="col in columnas" :key="col.field">
-    <Column :field="col.field" :header="col.header">
+    <Column :field="col.field" :header="col.header" v-if="col.field != 'estado'" >
       <template #filter="{ filterModel, filterCallback }">
         <InputText
           v-model="filterModel.value"
@@ -53,9 +80,12 @@
   <Column header="Acciones" class="w-24 !text-end">
     <template #body="{ data }">
       <div class="flex gap-2 justify-end">
-        <Button icon="pi pi-eye" severity="info" rounded />
-        <Button icon="pi pi-pencil" severity="danger" rounded />
-        <Button icon="pi pi-trash" severity="success" rounded />
+        <Button icon="pi pi-eye" severity="info" rounded :title="'Ver Procesos'"/>
+        <Button icon="pi pi-pencil" severity="warn" rounded :title="'Editar Macro Proceso'"/>
+        <Button icon="pi pi-comments" severity="success" rounded :title="'Ver Comentarios'"/>
+        <Button icon="pi pi-lock" severity="help" rounded :title="'Bloquear Macro Proceso'"/>
+        <Button icon="pi pi-lock-open" severity="secondary" rounded :title="'Desbloquear Macro Proceso'"/>
+        <Button icon="pi pi-trash" severity="danger" rounded :title="'Eliminar Macro Proceso'"/>
       </div>
     </template>
   </Column>
