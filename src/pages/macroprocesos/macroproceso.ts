@@ -26,9 +26,12 @@ export default {
     const v_nombre= ref('');
     const v_tipo= ref('');
     const v_area= ref('');
+    const v_id= ref('');
     const v_responsable= ref('');
     const confirm = useConfirm();
     const toast = useToast();
+    const bot_crear = ref(false);
+    const bot_actua = ref(false);
 
     const paginatorConfig = {
       paginatorTemplate: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown CurrentPageReport',
@@ -94,6 +97,8 @@ export default {
     };
 
     const muestramodal = () => {
+      bot_crear.value = true;
+      bot_actua.value = false;
       visible.value = true;
     }
 
@@ -140,6 +145,90 @@ export default {
     });
     }
 
+
+    const editarmacro = (data:any) => {
+
+      if(data.estado != 'A'){
+
+        bot_crear.value = false;
+        bot_actua.value = true;
+
+        v_nombre.value = data.nombre;
+        v_id.value = data.id;
+
+        const aux = sessionStore.lista.personal.find(perso => {
+          const nombreCompleto = `${perso.primer_apellido} ${perso.primer_nombre}`;
+          return nombreCompleto === data.responsable;
+        });
+        v_responsable.value = aux.id;
+
+
+        const tip = sessionStore.lista.tipos_macros.find(tipo => {
+          return tipo.Nombre === data.tipo;
+        });
+        v_tipo.value =  tip.id;
+      
+
+        const are = sessionStore.lista.areas.find(area => {
+          return area.Nombre === data.area;
+        });
+        v_area.value =  are.id;
+
+        visible.value = true;
+      }else{
+        toast.add({ severity: 'error', summary: 'Alerta', detail: 'No se pueden editar procesos ya aprobados', life: 3000 });
+      }
+      
+    }
+
+
+    const editarmacroproceso = async () => {
+      confirm.require({
+        message: '¿Está de acuerdo en Editar el Macro Proceso?',
+        header: 'Confirmacion del Usuario',
+        icon: 'pi pi-exclamation-triangle',
+        position: 'top',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Actualizar'
+        },
+        accept: async () => {
+          const datos = {
+            id:v_id.value,
+            nombre:v_nombre.value,
+            tipo: v_tipo.value,
+            area_responsable:v_area.value,
+            responsable:v_responsable.value,
+            estado:"P"
+          }
+          const res = await axios.put(ip + '/macroprocesos', {
+            sesion_id: sessionStore.sesion_id,
+            data: datos
+          });
+          console.log(res);
+          if (res.data.success) {
+            visible.value = false;
+            v_nombre.value = '';
+            v_tipo.value = '';
+            v_area.value = '';
+            v_responsable.value = '';
+            toast.add({ severity: 'success', summary: 'Exito', detail:res.data.mensaje, life: 3000 });
+          }else{
+             toast.add({ severity: 'error', summary: 'Alerta', detail:res.data.mensaje, life: 3000 });
+          }
+          },
+        reject: () => {
+            
+        }
+    });
+    }
+
+    
+
     return { 
       productos, 
       filters, 
@@ -153,10 +242,14 @@ export default {
       limpiarFiltros,
       muestramodal,
       crearmacroproceso,
+      editarmacro,
+      editarmacroproceso,
       v_nombre,
       v_tipo,
       v_area,
-      v_responsable
+      v_responsable,
+      bot_crear,
+      bot_actua,
     };
   }
 }

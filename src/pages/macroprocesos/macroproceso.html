@@ -81,7 +81,7 @@
     <template #body="{ data }">
       <div class="flex gap-2 justify-end">
         <Button icon="pi pi-eye" severity="info" rounded :title="'Ver Procesos'"/>
-        <Button icon="pi pi-pencil" severity="warn" rounded :title="'Editar Macro Proceso'"/>
+        <Button icon="pi pi-pencil" severity="warn" rounded :title="'Editar Macro Proceso'" @click="editarmacro(data)"/>
         <Button icon="pi pi-comments" severity="success" rounded :title="'Ver Comentarios'"/>
         <Button icon="pi pi-lock" severity="help" rounded :title="'Bloquear Macro Proceso'"/>
         <Button icon="pi pi-lock-open" severity="secondary" rounded :title="'Desbloquear Macro Proceso'"/>
@@ -116,7 +116,8 @@
     <div class="flex flex-row-reverse flex-wrap" style="margin-bottom: 10px;">
         <div class="flex align-items-center justify-content-center">
           <Button @click="visible = false" severity="danger" raised icon="pi pi-times-circle" label="Cerrar" style="margin-right: 5px;"/>
-          <Button severity="success" raised icon="pi pi-plus-circle" label="Crear" @click="crearmacroproceso" />
+          <Button v-show="bot_crear" severity="success" raised icon="pi pi-plus-circle" label="Crear" @click="crearmacroproceso" />
+          <Button v-show="bot_actua" severity="success" raised icon="pi pi-plus-circle" label="Actualizar" @click="editarmacroproceso" />
       </div>
     </div>
   </Dialog>
