@@ -155,7 +155,15 @@ export default {
 
         v_nombre.value = data.nombre;
         v_id.value = data.id;
+        carga_valores_id(data);
+        visible.value = true;
+      }else{
+        toast.add({ severity: 'error', summary: 'Alerta', detail: 'No se pueden editar procesos ya aprobados', life: 3000 });
+      }
+      
+    }
 
+    const carga_valores_id = async (data:any) => {
         const aux = sessionStore.lista.personal.find(perso => {
           const nombreCompleto = `${perso.primer_apellido} ${perso.primer_nombre}`;
           return nombreCompleto === data.responsable;
@@ -173,14 +181,7 @@ export default {
           return area.Nombre === data.area;
         });
         v_area.value =  are.id;
-
-        visible.value = true;
-      }else{
-        toast.add({ severity: 'error', summary: 'Alerta', detail: 'No se pueden editar procesos ya aprobados', life: 3000 });
-      }
-      
     }
-
 
     const editarmacroproceso = async () => {
       confirm.require({
@@ -205,11 +206,11 @@ export default {
             responsable:v_responsable.value,
             estado:"P"
           }
+          console.log(datos);
           const res = await axios.put(ip + '/macroprocesos', {
             sesion_id: sessionStore.sesion_id,
             data: datos
           });
-          console.log(res);
           if (res.data.success) {
             visible.value = false;
             v_nombre.value = '';
@@ -217,6 +218,8 @@ export default {
             v_area.value = '';
             v_responsable.value = '';
             toast.add({ severity: 'success', summary: 'Exito', detail:res.data.mensaje, life: 3000 });
+            cargar_macroprocesos();
+
           }else{
              toast.add({ severity: 'error', summary: 'Alerta', detail:res.data.mensaje, life: 3000 });
           }
@@ -227,7 +230,65 @@ export default {
     });
     }
 
-    
+    const estadomacroproceso = async (acc:any,data:any) => {
+      let mensaje = '';
+      if(acc == 'A'){
+        mensaje = '¿Está de acuerdo en Autorizar el Macro Proceso?';
+      }else{
+        mensaje = 'Al rechazar el Macro Proceso, todos los procesos relacionados quedarán bloqueados. ¿Desea continuar?';
+      }
+      // estamos aqui agregando las validaciones que se tienen que hacer cuando un macro esta autorizado para rechazarlo
+      // y para cuando este rechazado lo autorice de lo contrario no deberia de dejarlo
+
+      if(data.estado == 'A' && acc != 'A'){
+        carga_valores_id(data);
+        confirm.require({
+          message: mensaje ,
+          header: 'Confirmacion del Usuario',
+          icon: 'pi pi-exclamation-triangle',
+          position: 'top',
+          rejectProps: {
+              label: 'Cancelar',
+              severity: 'secondary',
+              outlined: true
+          },
+          acceptProps: {
+              label: 'Confirmar'
+          },
+          accept: async () => {
+            const datos = {
+              id:data.id,
+              nombre:data.nombre,
+              tipo: v_tipo.value,
+              area_responsable:v_area.value,
+              responsable:v_responsable.value,
+              estado:acc
+            }
+            console.log(datos);
+            const res = await axios.put(ip + '/macroprocesos', {
+              sesion_id: sessionStore.sesion_id,
+              data: datos
+            });
+            if (res.data.success) {
+              visible.value = false;
+              v_nombre.value = '';
+              v_tipo.value = '';
+              v_area.value = '';
+              v_responsable.value = '';
+              toast.add({ severity: 'success', summary: 'Exito', detail:res.data.mensaje, life: 3000 });
+              cargar_macroprocesos();
+            }else{
+              toast.add({ severity: 'error', summary: 'Alerta', detail:res.data.mensaje, life: 3000 });
+            }
+            },
+          reject: () => {
+              
+          }
+        });
+      }else{
+        toast.add({ severity: 'error', summary: 'Alerta', detail: 'Ya el Macro proceso se encuentra Aprobado', life: 3000 });
+      }
+    }
 
     return { 
       productos, 
@@ -239,17 +300,19 @@ export default {
       tipos,
       areas,
       responsables,
-      limpiarFiltros,
-      muestramodal,
-      crearmacroproceso,
-      editarmacro,
-      editarmacroproceso,
       v_nombre,
       v_tipo,
       v_area,
       v_responsable,
       bot_crear,
       bot_actua,
+      limpiarFiltros,
+      muestramodal,
+      crearmacroproceso,
+      editarmacro,
+      editarmacroproceso,
+      estadomacroproceso,
+      
     };
   }
 }

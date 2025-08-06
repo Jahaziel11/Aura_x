@@ -80,11 +80,10 @@
   <Column header="Acciones" class="w-24 !text-end">
     <template #body="{ data }">
       <div class="flex gap-2 justify-end">
-        <Button icon="pi pi-eye" severity="info" rounded :title="'Ver Procesos'"/>
         <Button icon="pi pi-pencil" severity="warn" rounded :title="'Editar Macro Proceso'" @click="editarmacro(data)"/>
-        <Button icon="pi pi-comments" severity="success" rounded :title="'Ver Comentarios'"/>
-        <Button icon="pi pi-lock" severity="help" rounded :title="'Bloquear Macro Proceso'"/>
-        <Button icon="pi pi-lock-open" severity="secondary" rounded :title="'Desbloquear Macro Proceso'"/>
+        <Button icon="pi pi-comments" severity="help" rounded :title="'Ver Comentarios'"/>
+        <Button v-if="data.estado != 'A' " icon="pi pi-check-square" severity="success" rounded :title="'Aprobar Macro Proceso' " @click="estadomacroproceso('A',data)"/>
+        <Button v-if="data.estado === 'A' " icon="pi pi-times-circle" severity="secondary" rounded :title="'Rechazar Macro Proceso'" @click="estadomacroproceso('R',data)"/>
         <Button icon="pi pi-trash" severity="danger" rounded :title="'Eliminar Macro Proceso'"/>
       </div>
     </template>
