@@ -85,11 +85,11 @@
         <Button v-if="data.estado != 'A' " icon="pi pi-check-square" severity="success" rounded :title="'Aprobar Macro Proceso' " @click="estadomacroproceso('A',data)"/>
         <Button v-if="data.estado === 'A' " icon="pi pi-times-circle" severity="secondary" rounded :title="'Rechazar Macro Proceso'" @click="estadomacroproceso('R',data)"/>
         <Button v-if="data.cantidad === '0'" icon="pi pi-trash" severity="danger" rounded :title="'Eliminar Macro Proceso'"  @click="eliminarmacroproceso(data)" />
-        <Button v-if="data.cantidad > '0'" icon="pi pi-share-alt" severity="info" rounded :title="'Relaciones del Macro Proceso'"  @click="eliminarmacroproceso(data)" />
+        <Button v-if="data.cantidad > '0'" icon="pi pi-share-alt" severity="info" rounded :title="'Relaciones del Macro Proceso'"  @click="verrelacion(data)" />
       </div>
     </template>
   </Column>
-</DataTable>
+  </DataTable>
 
 
   <Dialog v-model:visible="visible" header="Nuevo Macroproceso" :position="position" :style="{ width: '40rem' }">
@@ -121,7 +121,6 @@
       </div>
     </div>
   </Dialog>
-
 
   <Dialog v-model:visible="visible2" header="Comentarios del Macroproceso" :position="position" :style="{ width: '40rem' }">
     <DataView :value="comentariosdata">
@@ -171,6 +170,20 @@
         <Button severity="success" raised icon="pi pi-plus-circle" label="Guardar" @click="crearcomentario" />
       </div>
   </template>
+  </Dialog>
+
+  <Dialog v-model:visible="visible4" header="Procesos Relacionados" :position="position" :style="{ width: '60rem' }">
+    <label><b>Macro Proceso:</b>{{titulomacro}}</label>
+    <DataTable :value="procesos" tableStyle="min-width: 50rem" style="font-size: 14px;">
+      <Column field="id" header="ID"></Column>
+      <Column field="Nombre" header="Nombre"></Column>
+      <Column field="objetivo" header="objetivo"></Column>
+      <Column field="nombre_area" header="nombre_area"></Column>
+      <Column field="tipo_cliente" header="tipo_cliente"></Column>
+      <Column field="responsable" header="responsable"></Column>
+      <Column field="tipo_cliente" header="tipo_cliente"></Column>
+      
+    </DataTable>
   </Dialog>
 
   

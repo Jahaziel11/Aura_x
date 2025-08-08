@@ -19,11 +19,14 @@ export default {
     const macrodatas = ref([]);
     const comentariosdata = ref([]);
     const padrecomentario = ref([]);
+    const procesos = ref([]);
     const sessionStore = useSessionStore()
     const visible = ref(false);
     const visible2 = ref(false);
     const visible3 = ref(false);
+    const visible4 = ref(false);
     const position = ref('top');
+    const titulomacro = ref('');
     const tipos = ref('');
     const areas = ref('');
     const responsables = ref('');
@@ -336,11 +339,12 @@ export default {
     const comentarios = async (id:any) => {
 
       try {
-        const response = await axios.get(ip + '/macroprocesos', {
+        const response = await axios.get(ip + '/comentarios', {
           params: {
             sesion_id: sessionStore.sesion_id,
-            acc: 3,
-            id_macro: id
+            acc: 1,
+            id_macro: id,
+            tipo_macro: 'MAC'
           }
         });
         padrecomentario.value = id;
@@ -402,6 +406,27 @@ export default {
       });
     }
 
+    const verrelacion = async (data:any) => {
+      titulomacro.value = data.id+'-'+data.nombre;
+      try {
+        const response = await axios.get(ip + '/macroprocesos', {
+          params: {
+            sesion_id: sessionStore.sesion_id,
+            acc: 3,
+            id_macro: data.id
+          }
+        });
+    
+        console.log(response.data?.data);
+        procesos.value = response.data?.data
+      } catch (error) {
+        console.error('Error al cargar comentarios:', error);
+      }
+
+
+      visible4.value = true;
+    }
+
 
     return { 
       macrodatas, 
@@ -412,6 +437,7 @@ export default {
       visible,
       visible2,
       visible3,
+      visible4,
       position,
       tipos,
       areas,
@@ -423,6 +449,8 @@ export default {
       bot_crear,
       bot_actua,
       v_comentario,
+      titulomacro,
+      procesos,
       limpiarFiltros,
       muestramodal,
       crearmacroproceso,
@@ -433,6 +461,7 @@ export default {
       comentarios,
       nuevocomentario,
       crearcomentario,
+      verrelacion,
     };
   }
 }
