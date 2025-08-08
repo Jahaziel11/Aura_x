@@ -10,9 +10,10 @@ export const useSessionStore = defineStore('session', {
   }),
   actions: {
     iniciarSesion(data) {
-      console.log(data);
+
       this.sesion_id = data.sesion_id;
       this.username = data.username;
+      this.id_username = data.id_usuario;
       this.menusesion = data.menuUsuario;
       this.lista = data.lists;
       this.isAuthenticated = true;
@@ -20,6 +21,7 @@ export const useSessionStore = defineStore('session', {
       localStorage.setItem('session', JSON.stringify({
         sesion_id: this.sesion_id,
         username: this.username,
+        id_username: this.id_username,
         menusesion: this.menusesion,
         lista: this.lista,
         isAuthenticated: this.isAuthenticated
@@ -29,6 +31,7 @@ export const useSessionStore = defineStore('session', {
     cerrarSesion() {
       this.sesion_id = null;
       this.username = null;
+      this.id_username = null;
       this.isAuthenticated = false;
       this.menusesion = null;
       this.lista = null;
@@ -40,6 +43,7 @@ export const useSessionStore = defineStore('session', {
         const parsedSession = JSON.parse(savedSession);
         this.sesion_id = parsedSession.sesion_id;
         this.username = parsedSession.username;
+        this.id_username = parsedSession.id_username;
         this.menusesion = parsedSession.menusesion;
         this.isAuthenticated = parsedSession.isAuthenticated;
         this.lista = parsedSession.lista;

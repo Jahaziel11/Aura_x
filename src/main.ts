@@ -25,6 +25,8 @@ import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice'; 
 import ConfirmDialog from 'primevue/confirmdialog';
 import ConfirmationService from 'primevue/confirmationservice';
+import DataView from 'primevue/dataview';
+import Editor from 'primevue/editor';
 
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css';
@@ -102,6 +104,8 @@ app.component('Dialog', Dialog);
 app.component('Select', Select);
 app.component('ConfirmDialog', ConfirmDialog);
 app.component('Toast', Toast);
+app.component('DataView', DataView);
+app.component('Editor',Editor);
 
 app.use(router)
 app.use(createPinia())

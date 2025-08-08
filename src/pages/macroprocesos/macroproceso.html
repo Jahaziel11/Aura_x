@@ -1,6 +1,6 @@
 <div class="card">
   <DataTable
-  :value="productos"
+  :value="macrodatas"
   :paginator="true"
   :rows="10"
   :rowsPerPageOptions="[10, 20, 50]"
@@ -64,7 +64,7 @@
 
 
   <template v-for="col in columnas" :key="col.field">
-    <Column :field="col.field" :header="col.header" v-if="col.field != 'estado'" >
+    <Column :field="col.field" :header="col.header" v-if="col.field != 'estado' && col.field != 'cantidad'" >
       <template #filter="{ filterModel, filterCallback }">
         <InputText
           v-model="filterModel.value"
@@ -81,10 +81,11 @@
     <template #body="{ data }">
       <div class="flex gap-2 justify-end">
         <Button icon="pi pi-pencil" severity="warn" rounded :title="'Editar Macro Proceso'" @click="editarmacro(data)"/>
-        <Button icon="pi pi-comments" severity="help" rounded :title="'Ver Comentarios'"/>
+        <Button icon="pi pi-comments" severity="help" rounded :title="'Ver Comentarios'"  @click="comentarios(data.id)"/>
         <Button v-if="data.estado != 'A' " icon="pi pi-check-square" severity="success" rounded :title="'Aprobar Macro Proceso' " @click="estadomacroproceso('A',data)"/>
         <Button v-if="data.estado === 'A' " icon="pi pi-times-circle" severity="secondary" rounded :title="'Rechazar Macro Proceso'" @click="estadomacroproceso('R',data)"/>
-        <Button icon="pi pi-trash" severity="danger" rounded :title="'Eliminar Macro Proceso'"/>
+        <Button v-if="data.cantidad === '0'" icon="pi pi-trash" severity="danger" rounded :title="'Eliminar Macro Proceso'"  @click="eliminarmacroproceso(data)" />
+        <Button v-if="data.cantidad > '0'" icon="pi pi-share-alt" severity="info" rounded :title="'Relaciones del Macro Proceso'"  @click="eliminarmacroproceso(data)" />
       </div>
     </template>
   </Column>
@@ -120,4 +121,57 @@
       </div>
     </div>
   </Dialog>
+
+
+  <Dialog v-model:visible="visible2" header="Comentarios del Macroproceso" :position="position" :style="{ width: '40rem' }">
+    <DataView :value="comentariosdata">
+      <template  #header>
+        <div class="formgrid grid">
+            <div v-for="tab in comentariosdata"  class="formgrid grid col-12" style="border-radius: 5px; margin-bottom: 5px;">
+              
+                  <div class="field col-2" style="margin-top: 5px; text-align: center;">
+                    <i class="pi pi-user" style="font-size: 2.5rem"></i>
+                  </div>
+                  <div class="field col-9" style="margin-top: 5px; background-color: rgba(72, 111, 177, 0.992); border-radius: 5px; color: aliceblue;">
+                    <div class="field col-12" style="margin-top: 5px; font-size: 12px;">
+                      <label for="lastname2">{{tab.responsable}}</label>     
+                    </div>
+                    <div class="field col-12">
+                      <label for="lastname2" v-html="tab.comentario"></label>   
+                    </div>
+                      <div class="field col-12" style="text-align: right; font-size: 12px;">
+                      <label for="lastname2">{{tab.fecha}}</label>     
+                    </div>
+                  </div>
+            </div>
+        </div>
+      </template>
+    </DataView>
+     <template #footer style="margin-top: 5px;">
+        <div class="field col" style="text-align: right;">
+          <Button @click="visible2 = false"  severity="danger" raised icon="pi pi-times-circle" label="Cerrar" style="margin-right: 5px;"/>
+          <Button severity="success" raised icon="pi pi-plus-circle" label="Crear" @click="nuevocomentario" />
+        </div>
+    </template>
+  </Dialog>
+
+  <Dialog v-model:visible="visible3" header="Crear Comentario" :position="position" :style="{ width: '40rem' }">
+      <Editor v-if="visible3"  v-model="v_comentario" editorStyle="height: 320px">
+        <template v-slot:toolbar>
+            <span class="ql-formats">
+                <button v-tooltip.bottom="'Bold'" class="ql-bold"></button>
+                <button v-tooltip.bottom="'Italic'" class="ql-italic"></button>
+                <button v-tooltip.bottom="'Underline'" class="ql-underline"></button>
+            </span>
+        </template>
+    </Editor>
+    <template #footer style="margin-top: 5px;">
+      <div class="field col" style="text-align: right;">
+        <Button @click="visible3 = false"  severity="danger" raised icon="pi pi-times-circle" label="Cerrar" style="margin-right: 5px;"/>
+        <Button severity="success" raised icon="pi pi-plus-circle" label="Guardar" @click="crearcomentario" />
+      </div>
+  </template>
+  </Dialog>
+
+  
 </div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useSessionStore } from '@/store/sessionStore'
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
-
+import { nextTick } from 'vue'
 
 
 export default {
@@ -16,9 +16,13 @@ export default {
     const filters = ref({
       global: { value: null, matchMode: FilterMatchMode.CONTAINS }
     });
-    const productos = ref([]);
+    const macrodatas = ref([]);
+    const comentariosdata = ref([]);
+    const padrecomentario = ref([]);
     const sessionStore = useSessionStore()
     const visible = ref(false);
+    const visible2 = ref(false);
+    const visible3 = ref(false);
     const position = ref('top');
     const tipos = ref('');
     const areas = ref('');
@@ -30,8 +34,10 @@ export default {
     const v_responsable= ref('');
     const confirm = useConfirm();
     const toast = useToast();
+    const v_comentario= ref('');
     const bot_crear = ref(false);
     const bot_actua = ref(false);
+
 
     const paginatorConfig = {
       paginatorTemplate: 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown CurrentPageReport',
@@ -82,7 +88,7 @@ export default {
             filters.value[campo] = { value: null, matchMode: FilterMatchMode.CONTAINS };
             return { field: campo, header: key };
           });
-          productos.value = data;
+          macrodatas.value = data;
         }
 
       } catch (error) {
@@ -237,10 +243,8 @@ export default {
       }else{
         mensaje = 'Al rechazar el Macro Proceso, todos los procesos relacionados quedarán bloqueados. ¿Desea continuar?';
       }
-      // estamos aqui agregando las validaciones que se tienen que hacer cuando un macro esta autorizado para rechazarlo
-      // y para cuando este rechazado lo autorice de lo contrario no deberia de dejarlo
 
-      if(data.estado == 'A' && acc != 'A'){
+
         carga_valores_id(data);
         confirm.require({
           message: mensaje ,
@@ -285,17 +289,129 @@ export default {
               
           }
         });
-      }else{
-        toast.add({ severity: 'error', summary: 'Alerta', detail: 'Ya el Macro proceso se encuentra Aprobado', life: 3000 });
-      }
     }
 
+    const eliminarmacroproceso = async (data:any) => {
+        carga_valores_id(data);
+        confirm.require({
+          message: '¿Está de acuerdo en Eliminar el Macro Proceso?',
+          header: 'Confirmacion del Usuario',
+          icon: 'pi pi-exclamation-triangle',
+          position: 'top',
+          rejectProps: {
+              label: 'Cancelar',
+              severity: 'secondary',
+              outlined: true
+          },
+          acceptProps: {
+              label: 'Confirmar'
+          },
+          accept: async () => {
+            const datos = {
+              id:data.id
+            }
+            console.log(datos);
+            const res = await axios.put(ip + '/macroprocesos', {
+              sesion_id: sessionStore.sesion_id,
+              data: datos
+            });
+            if (res.data.success) {
+                visible.value = false;
+                v_nombre.value = '';
+                v_tipo.value = '';
+                v_area.value = '';
+                v_responsable.value = '';
+                toast.add({ severity: 'success', summary: 'Exito', detail:res.data.mensaje, life: 3000 });
+                cargar_macroprocesos();
+            }else{
+              toast.add({ severity: 'error', summary: 'Alerta', detail:res.data.mensaje, life: 3000 });
+            }
+            },
+          reject: () => {
+              
+          }
+        });
+    }
+
+    const comentarios = async (id:any) => {
+
+      try {
+        const response = await axios.get(ip + '/macroprocesos', {
+          params: {
+            sesion_id: sessionStore.sesion_id,
+            acc: 3,
+            id_macro: id
+          }
+        });
+        padrecomentario.value = id;
+        comentariosdata.value = response.data?.data
+      } catch (error) {
+        console.error('Error al cargar comentarios:', error);
+      }
+
+
+      visible2.value = true;
+    }
+
+    const nuevocomentario = async () => {
+      v_comentario.value = ''; 
+      visible3.value = true;
+      await nextTick();
+      v_comentario.value = ''; 
+    }
+
+    const crearcomentario = async () => {
+
+      confirm.require({
+        message: '¿Esta conforme con el comentario a crear?',
+        header: 'Confirmacion del Usuario',
+        icon: 'pi pi-exclamation-triangle',
+        position: 'top',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptProps: {
+            label: 'Si'
+        },
+        accept: async () => {
+          const datos = {
+            id_usuario:sessionStore.id_username,
+            modulo:'MAC',
+            id_modulo:padrecomentario.value,
+            comentario:v_comentario.value
+          }
+          console.log(datos);
+          const res = await axios.post(ip + '/comentarios', {
+            sesion_id: sessionStore.sesion_id,
+            data: datos
+          });
+          if (res.data.success) {
+            toast.add({ severity: 'success', summary: 'Exito', detail:res.data.mensaje, life: 3000 });
+            visible3.value=false;
+            comentarios(padrecomentario.value);
+
+          }else{
+             toast.add({ severity: 'error', summary: 'Alerta', detail:res.data.mensaje, life: 3000 });
+          }
+          },
+          reject: () => {
+              
+          }
+      });
+    }
+
+
     return { 
-      productos, 
+      macrodatas, 
+      comentariosdata,
       filters, 
       paginatorConfig,
       columnas,
       visible,
+      visible2,
+      visible3,
       position,
       tipos,
       areas,
@@ -306,13 +422,17 @@ export default {
       v_responsable,
       bot_crear,
       bot_actua,
+      v_comentario,
       limpiarFiltros,
       muestramodal,
       crearmacroproceso,
       editarmacro,
       editarmacroproceso,
       estadomacroproceso,
-      
+      eliminarmacroproceso,
+      comentarios,
+      nuevocomentario,
+      crearcomentario,
     };
   }
 }
